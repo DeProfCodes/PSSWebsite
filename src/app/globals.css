@@ -1,0 +1,290 @@
+@import "tailwindcss";
+
+/* =============================================================================
+ * PSS DESIGN TOKENS — approved direction (2026-09-23)
+ *
+ * Visual language: premium dark navy surfaces first, blue/cyan as controlled
+ * energy. Brand colours are sampled from public/images/brand/Logo.png.
+ *
+ * Components reference SEMANTIC tokens only (bg-background, text-muted-foreground,
+ * border-border, …). Dark sections opt in with the `.theme-dark` class, which
+ * re-points the same semantic tokens — no dark-specific component variants.
+ *
+ * Contrast notes (WCAG 2.2 AA):
+ *   --primary #0b72c7 with white text      4.9:1
+ *   --primary-hover #0c78cf with white     4.5:1
+ *   dark --muted-foreground on --ink-950   9.4:1
+ *   light --muted-foreground on white      6.6:1
+ * ========================================================================== */
+:root {
+  /* Brand (from the logo) */
+  --brand-deep: #167fc5;
+  --brand-azure: #0c9dde;
+  --brand-cyan: #31bfff;
+
+  /* Ink — deep navy surfaces */
+  --ink-950: #030a16;
+  --ink-900: #061122;
+  --ink-850: #09172c;
+  --ink-800: #0d1f38;
+  --ink-700: #16304f;
+
+  /* Light section surfaces (alternate with dark sections) */
+  --canvas: #f6f8fb;
+  --canvas-blue: #edf3fa;
+
+  /* Semantic — light context (default) */
+  --background: #ffffff;
+  --foreground: #0b1424;
+  --surface: #f4f7fb;
+  --surface-elevated: #ffffff;
+  --primary: #0b72c7;
+  --primary-hover: #0c78cf;
+  --primary-foreground: #ffffff;
+  --accent: #0b72c7;
+  --accent-foreground: #ffffff;
+  --muted: #eef2f7;
+  --muted-foreground: #4f5d72;
+  --border: #dbe3ee;
+  --ring: #0b72c7;
+  --danger: #b42318;
+  --success: #1c7c3a;
+
+  /* Shape */
+  --radius: 0.625rem;
+  --radius-panel: 1.125rem;
+
+  /* Layout */
+  --header-height: 4rem;
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --header-height: 4.5rem;
+  }
+}
+
+/* Semantic — dark context. Apply to header, hero, bands and other dark sections. */
+.theme-dark {
+  --background: var(--ink-950);
+  --foreground: #eef4fc;
+  --surface: rgb(255 255 255 / 0.04);
+  --surface-elevated: rgb(255 255 255 / 0.07);
+  --accent: var(--brand-cyan);
+  --accent-foreground: var(--ink-950);
+  --muted: rgb(255 255 255 / 0.06);
+  --muted-foreground: #a3b4ca;
+  --border: rgb(148 190 255 / 0.14);
+  --ring: #5ccfff;
+  color-scheme: dark;
+  color: var(--foreground);
+}
+
+/* Map tokens to Tailwind utilities. `inline` keeps the var() reference, which is
+ * what lets `.theme-dark` re-point them per section. */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+
+  --color-canvas: var(--canvas);
+  --color-canvas-blue: var(--canvas-blue);
+  --color-brand-deep: var(--brand-deep);
+  --color-brand-azure: var(--brand-azure);
+  --color-brand-cyan: var(--brand-cyan);
+  --color-ink-950: var(--ink-950);
+  --color-ink-900: var(--ink-900);
+  --color-ink-850: var(--ink-850);
+  --color-ink-800: var(--ink-800);
+  --color-ink-700: var(--ink-700);
+
+  --radius-base: var(--radius);
+  --radius-panel: var(--radius-panel);
+
+  /* Typefaces are loaded with next/font in src/app/layout.tsx (see ARCHITECTURE.md §9). */
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+@theme {
+  /* Layout widths → max-w-content, max-w-narrow, max-w-wide */
+  --container-content: 80rem;
+  --container-narrow: 48rem;
+  --container-wide: 88rem;
+
+  /* Motion — slow and restrained. Always apply with `motion-safe:`. */
+  --animate-float-slow: float-slow 9s ease-in-out infinite;
+  --animate-float-slower: float-slow 12s ease-in-out infinite;
+  --animate-node-pulse: node-pulse 3.6s ease-in-out infinite;
+  --animate-glow: glow-breathe 8s ease-in-out infinite;
+  --animate-line-flow: line-flow 7s linear infinite;
+  --animate-menu-in: menu-in 160ms ease-out;
+
+  @keyframes float-slow {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+    50% {
+      transform: translate3d(0, -8px, 0);
+    }
+  }
+
+  @keyframes node-pulse {
+    0%,
+    100% {
+      opacity: 0.45;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.6);
+    }
+  }
+
+  @keyframes glow-breathe {
+    0%,
+    100% {
+      opacity: 0.6;
+    }
+    50% {
+      opacity: 0.9;
+    }
+  }
+
+  @keyframes line-flow {
+    from {
+      stroke-dashoffset: 0;
+    }
+    to {
+      stroke-dashoffset: -100;
+    }
+  }
+
+  @keyframes menu-in {
+    from {
+      opacity: 0;
+      transform: translate3d(0, -6px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    -webkit-text-size-adjust: 100%;
+    /* In-page anchors must not hide under the sticky header. */
+    scroll-padding-top: calc(var(--header-height) + 1rem);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+  }
+
+  /* One consistent, clearly visible keyboard focus indicator (token-driven,
+   * so it switches to the dark-context colour inside `.theme-dark`). */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+}
+
+/* Display type scale shared by every section heading (the hero h1 has its own
+ * container-query size). Weight/tracking match the approved hero. */
+@utility text-display-2 {
+  font-size: clamp(2rem, 1.2rem + 3vw, 3.5rem);
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  font-weight: 800;
+  text-wrap: balance;
+}
+
+@utility text-display-3 {
+  font-size: clamp(1.5rem, 1.15rem + 1.4vw, 2.125rem);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  font-weight: 750;
+  text-wrap: balance;
+}
+
+/* Emphasis in headlines: solid brand blue on light sections (AA on white);
+ * the hero's cyan → azure gradient on dark sections. */
+@utility text-emphasis {
+  color: var(--accent);
+
+  .theme-dark & {
+    background-image: linear-gradient(95deg, var(--brand-cyan) 0%, var(--brand-azure) 55%, #2f8fe4 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    padding-bottom: 0.06em;
+  }
+
+  @media (forced-colors: active) {
+    background-image: none;
+    color: CanvasText;
+  }
+}
+
+/* The hero's technical grid, reusable on dark sections. */
+@utility bg-tech-grid {
+  background-image:
+    linear-gradient(rgb(120 170 255 / 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(120 170 255 / 0.06) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+
+/* Section reveal — CSS scroll-driven animation, no JavaScript. Content is fully
+ * visible where scroll timelines are unsupported or motion is reduced. */
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+  }
+}
+
+/* Respect users who ask for less motion. Components also gate every animation
+ * behind `motion-safe:`; this is the global safety net. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

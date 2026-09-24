@@ -637,7 +637,7 @@ Copied **verbatim** from source (including original spelling/typos). Portfolio d
 | Claim | Where |
 |---|---|
 | 33+ businesses / 33 happy clients | Home hero, stats band |
-| 37+ / 37 completed projects | Home hero, stats band |
+| 60+ / 60 completed projects | Home hero, stats band |
 | 4 active projects | Home hero badge, stats band |
 | Founded 2017 | About |
 | Free 30-minute consultation; response within 24 hours; Mon-Fri 8AM-5PM | Home CTA |

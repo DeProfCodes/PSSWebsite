@@ -19,7 +19,15 @@ export interface EmailMessage {
   html: string;
 }
 
-export type EmailSendResult = { ok: true; messageId?: string } | { ok: false; error: string };
+/**
+ * Facts about a failed send, for server logs only. Providers must never put
+ * credentials, message content or the environment in here.
+ */
+export type EmailFailureDetails = Record<string, string | number | boolean | undefined>;
+
+export type EmailSendResult =
+  | { ok: true; messageId?: string }
+  | { ok: false; error: string; details?: EmailFailureDetails };
 
 export interface EmailProvider {
   readonly name: string;

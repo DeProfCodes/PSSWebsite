@@ -191,6 +191,55 @@
     -webkit-text-size-adjust: 100%;
     /* In-page anchors must not hide under the sticky header. */
     scroll-padding-top: calc(var(--header-height) + 1rem);
+    /* Every page starts and ends on dark ink, so overscroll (rubber-band) areas
+     * match instead of flashing white. <body> still paints the page itself. */
+    background-color: var(--ink-950);
+  }
+
+  /* Page scrollbar — slim ink track, muted brand-blue thumb.
+   * Chromium / Safari: ::-webkit-scrollbar on the root (the page scrollbar only;
+   * form fields and small scroll areas keep their native scrollbars). */
+  html::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  html::-webkit-scrollbar-track {
+    background-color: var(--ink-950);
+  }
+
+  html::-webkit-scrollbar-thumb {
+    /* The ink border insets the thumb from the track edges. */
+    border: 2px solid var(--ink-950);
+    border-radius: 9999px;
+    background-color: color-mix(in oklab, var(--brand-deep) 55%, var(--ink-950));
+  }
+
+  html::-webkit-scrollbar-thumb:hover {
+    background-color: color-mix(in oklab, var(--brand-azure) 75%, var(--ink-950));
+  }
+
+  html::-webkit-scrollbar-thumb:active {
+    background-color: var(--brand-azure);
+  }
+
+  html::-webkit-scrollbar-corner {
+    background-color: var(--ink-950);
+  }
+
+  /* Firefox (no ::-webkit-scrollbar): the standard properties. Scoped with
+   * @supports because Chromium would otherwise let them override the rules
+   * above. Reset on <body> so only the page scrollbar is themed. */
+  @supports not selector(::-webkit-scrollbar) {
+    html {
+      scrollbar-width: thin;
+      scrollbar-color: color-mix(in oklab, var(--brand-deep) 60%, var(--ink-950)) var(--ink-950);
+    }
+
+    body {
+      scrollbar-width: auto;
+      scrollbar-color: auto;
+    }
   }
 
   body {

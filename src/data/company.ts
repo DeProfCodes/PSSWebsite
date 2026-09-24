@@ -44,10 +44,10 @@ export const company: Company = {
     },
     {
       id: "completed-projects",
-      value: 37,
+      value: 60,
       suffix: "+",
       label: "Projects Delivered",
-      source: "Approved by PSS (2026-09-23); matches the legacy site's 37+ (audit §3.10).",
+      source: "Approved by PSS (2026-09-23); matches the legacy site's 60+ (audit §3.10).",
       confirmed: true,
     },
     {

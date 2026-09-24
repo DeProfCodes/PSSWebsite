@@ -69,6 +69,7 @@ and `CONTACT_EMAIL_FROM` (optionally `CONTACT_EMAIL_CC`).
 | `npm run lint` | ESLint, **zero warnings allowed** |
 | `npm run typecheck` | Generates Next.js route types (`next typegen`), then `tsc --noEmit` |
 | `npm run validate` | lint → typecheck → build (run before every push) |
+| `npm run email:verify` | Checks the contact-form SMTP settings from `.env.local` — DNS, TCP, TLS and login — **without sending an email**; prints the failing stage and what to fix. Needs Node 22.18+ |
 
 ---
 
@@ -88,7 +89,7 @@ hold secrets. All other variables are server-only.
 | `CONTACT_EMAIL_TO` | server | for contact form | Primary PSS inbox (comma-separated list allowed) |
 | `CONTACT_EMAIL_CC` | server | Production | Copied on every enquiry (comma-separated). Production value: `nproficientm@gmail.com` |
 | `CONTACT_EMAIL_FROM` | server | for contact form | Sender address (must be authorised by the provider via SPF/DKIM) |
-| `SMTP_HOST` `SMTP_PORT` `SMTP_USERNAME` `SMTP_PASSWORD` | server | if `smtp` | SMTP mailbox. TLS is mandatory (465 = implicit TLS, others = STARTTLS) |
+| `SMTP_HOST` `SMTP_PORT` `SMTP_USERNAME` `SMTP_PASSWORD` | server | if `smtp` | SMTP mailbox. Use the provider's published outgoing-mail host and port; the host must match the server's TLS certificate. TLS is mandatory: 465 = implicit TLS, 587 = STARTTLS; plaintext-only ports are refused. Check with `npm run email:verify` |
 | `RESEND_API_KEY` | server | if `resend` | Resend API key |
 | `TURNSTILE_SECRET_KEY` | server | **leave empty** | Would require a Turnstile token on every enquiry, and the form does not render the widget |
 

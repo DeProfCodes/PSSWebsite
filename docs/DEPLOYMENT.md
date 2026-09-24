@@ -140,7 +140,34 @@ the legacy site running until the new site has been stable for a while.
 - **`EMAIL_PROVIDER=smtp` with an existing company mailbox:**
   - Mail is sent by the existing mail server, so **no DNS change** is needed.
   - Use a dedicated mailbox and a **new** password. The legacy one is compromised (§6).
-  - TLS is enforced: port 465, or STARTTLS on 587.
+  - `SMTP_HOST` and `SMTP_PORT` must be the provider's published **outgoing-mail
+    (SMTP) settings**. TLS is enforced and certificates are always validated:
+    - `465` = implicit TLS (`secure`), `587` = STARTTLS (required).
+    - A plaintext-only port is refused before the password is sent.
+    - `SMTP_HOST` must be a name on the server's certificate.
+  - **Current mailbox host (checked 2026-09-24):** the company mailbox is on
+    SmarterASP.NET. Use **`SMTP_HOST=mail5019.site4now.net`** and
+    **`SMTP_PORT=465`** (587 also works).
+    - The certificate is issued for `*.site4now.net`.
+    - `mail.proficientsoftwaresolutions.co.za` points at the same server, but it
+      fails certificate validation on 465 and 587.
+    - Port `8889` on that host is **plaintext only**: it answers
+      `503 TLS is not allowed` to STARTTLS.
+    - Using the provider host name also means the contact form doesn't depend on
+      the domain's DNS during the cut-over (§3).
+  - Check the settings with `npm run email:verify` (DNS, TCP, TLS and login;
+    sends nothing).
+- **Diagnosing a failed send.** The visitor only sees a generic message. The
+  Vercel function log has one line per failure:
+  ```
+  [contact] Email delivery failed: {"provider":"smtp","host":…,"port":…,"secure":…,
+    "stage":"dns|connection|timeout|tls|authentication|sender|recipient|message",
+    "code":…,"command":…,"responseCode":…,"message":…,"hint":…}
+  ```
+  It never contains credentials or the enquiry's content. A `connection` or
+  `timeout` stage from Vercel, when `npm run email:verify` passes locally, means
+  the mail server isn't reachable from Vercel's network. In that case switch to
+  `EMAIL_PROVIDER=resend` rather than working around it.
 - **`EMAIL_PROVIDER=resend`** (or another provider):
   - Add only the records the provider asks for (DKIM, and possibly a return-path/SPF on a subdomain).
   - A domain may have **only one SPF record**. Merge the provider's `include:`

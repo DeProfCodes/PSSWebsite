@@ -27,7 +27,10 @@ export function HeaderFrame({ children }: { children: ReactNode }) {
     <header
       data-scrolled={scrolled ? "" : undefined}
       className={cn(
-        "theme-dark sticky top-0 z-50 border-b border-white/[0.08] transition-[background-color,box-shadow,backdrop-filter] duration-300 ease-out",
+        "theme-dark sticky top-0 z-50 transition-[background-color,box-shadow,backdrop-filter] duration-300 ease-out",
+        // Hairline drawn inside the header box (a border would make the header 1px taller than
+        // --header-height, leaving a 1px strip of page background above the hero it overlaps).
+        "after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-white/[0.08]",
         scrolled ? "bg-ink-950/85 shadow-[0_12px_32px_-16px_rgb(0_0_0/0.7)] backdrop-blur-xl" : "bg-transparent",
         // While the mobile menu is open the bar must be opaque.
         "[html[data-menu-open]_&]:bg-ink-950",

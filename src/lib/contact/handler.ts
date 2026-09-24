@@ -162,13 +162,17 @@ export async function handleContactRequest(request: Request): Promise<Response> 
   });
 
   if (!result.ok) {
-    console.error(`[contact] Delivery via ${transport.provider.name} failed: ${result.error}`);
+    // Server log only — safe diagnostics (stage, code, SMTP command/reply, hint).
+    // The visitor gets a generic message: no hosts, codes or provider details.
+    const details = { provider: transport.provider.name, ...(result.details ?? { error: result.error }) };
+    console.error(`[contact] Email delivery failed: ${JSON.stringify(details)}`);
     return failure(
       502,
       "delivery_failed",
-      "We couldn't send your message right now. Please try again, or email or call us directly.",
+      "We couldn't send your message right now. Please try again or contact us directly.",
     );
   }
 
+  console.info(`[contact] Enquiry accepted by ${transport.provider.name}${result.messageId ? ` (${result.messageId})` : ""}.`);
   return success();
 }

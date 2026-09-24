@@ -104,7 +104,7 @@ export function MobileNav({ items, cta }: { items: NavigationItem[]; cta: Naviga
         ? createPortal(
             <div
               id={panelId}
-              className="theme-dark fixed inset-x-0 top-(--header-height) bottom-0 z-40 overflow-y-auto border-t border-white/[0.08] bg-ink-950 motion-safe:animate-menu-in lg:hidden"
+              className="theme-dark fixed inset-x-0 top-(--header-height) bottom-0 z-40 overflow-y-auto bg-ink-950 motion-safe:animate-menu-in lg:hidden"
             >
               <nav
                 aria-label="Primary"
